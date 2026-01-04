@@ -4,6 +4,7 @@ import Button from "../components/Button.jsx";
 import {Link} from "react-router-dom";
 import {useAuth} from "../context/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
+import {loginApi} from "../services/authService";
 function Login(){
     const [email,setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -13,32 +14,25 @@ function Login(){
     const [loading,setLoading] = useState(false);
     const {login} = useAuth();
     const {navigate} = useNavigate();
-    function handleLogin(){
+    async function handleLogin () {
         setError("");
 
-        if(!email || !password) {
+        if(!email || !password){
             setError("Email and password are required");
             return;
         }
 
-        if(!email.includes("@")){
-            setError("Please enter a valid email");
-            return;
-        }
+        try{
+            setLoading(true);
+            const data = await loginApi(email,password);
 
-        setLoading(true)
-
-
-        setTimeout(() => {
+            login(data.user);
+            navigate("/dashboard");
+        }catch (err){
+            setError(err.message);
+        }finally {
             setLoading(false);
-
-            if(email==="test@example.com" && password==="password"){
-                login({email});
-                navigate("/dashboard");
-            }else{
-                setError("Invalid credentials");
-            }
-        },1500);
+        }
     }
     return(
         <div
