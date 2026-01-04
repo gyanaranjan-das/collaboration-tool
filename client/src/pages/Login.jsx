@@ -1,6 +1,7 @@
 import {useState} from "react";
 import Input from "../components/Input.jsx";
 import Button from "../components/Button.jsx";
+import {Link} from "react-router-dom"
 function Login(){
     const [email,setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -75,8 +76,9 @@ function Login(){
             </div>
             <Button onClick={handleLogin} loading={loading} disabled={loading}>Login</Button>
 
-            <p style={{marginTop:"16px",textAlign:"center"}}>Don't have an account?
-                <span style={{color:"#4f46e5"}}>Register</span></p>
+            <p style={{marginTop:"16px",textAlign:"center"}}>Don't have an account?{" "}
+                <Link to="/register" style={{color:"#4f46e5"}}>Register</Link>
+            </p>
         </div>
     );
 }
