@@ -1,7 +1,9 @@
 import {useState} from "react";
 import Input from "../components/Input.jsx";
 import Button from "../components/Button.jsx";
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import {useAuth} from "../context/AuthContext.jsx";
+import {useNavigate} from "react-router-dom";
 function Login(){
     const [email,setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -9,7 +11,8 @@ function Login(){
 
     const [error,setError] = useState("");
     const [loading,setLoading] = useState(false);
-
+    const {login} = useAuth();
+    const {navigate} = useNavigate();
     function handleLogin(){
         setError("");
 
@@ -30,7 +33,8 @@ function Login(){
             setLoading(false);
 
             if(email==="test@example.com" && password==="password"){
-                alert("login successful");
+                login({email});
+                navigate("/dashboard");
             }else{
                 setError("Invalid credentials");
             }
